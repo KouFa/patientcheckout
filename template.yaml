@@ -8,6 +8,8 @@ Globals:
     Timeout: 20
 
 Resources:
+  PatientCheckoutTopic:
+    Type: AWS::SNS::Topic
   PatientCheckoutBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -22,7 +24,12 @@ Resources:
         - x86_64
       Policies:
         - S3ReadPolicy:
-          BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+            BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt PatientCheckoutTopic.TopicName
+      Environment:
+        Variables:
+          PATIENT_CHECKOUT_TOPIC: !Ref PatientCheckoutTopic
       Events:
         S3Event:
           Type: S3
