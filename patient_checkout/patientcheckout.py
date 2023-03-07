@@ -6,7 +6,7 @@ s3 = boto3.client('s3')
 sns_client = boto3.client('sns')
 
 def lambda_handler(event, context):
-    topic = os.eniron.get('PATIENT_CHECKOUT_TOPIC')
+    topic = os.environ.get('PATIENT_CHECKOUT_TOPIC')
     bucket_name = event['Records'][0]['s3']['bucket']['name']
     file_key = event['Records'][0]['s3']['object']['key']
     obj = s3.get_object(Bucket=bucket_name, Key=file_key)
